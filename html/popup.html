@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="../css/extension.css">
+    <link rel="stylesheet" href="../css/popup.css">
+</head>
+
+<!-- 
+Ian Smith - January 2026 - Browser extension popup for setting configuration
+-->
+
+<body>
+    <div class="header">
+        <img src="../images/legalstream.png" class="logo" alt="Logo">
+        <span>LegalStream Technology Actionstep Helper</span>
+    </div>
+    <hr>
+
+    <!--  container for dynamically created checkboxes -->
+    <div id="features-container"></div>
+
+    <hr>
+    <h5>Environment Color Selectors:</h5>
+    <table align="center">
+        <thead>
+            <tr>
+                <th>Environment</th>
+                <th>Color</th>
+            </tr>
+            <tr>
+                <td> Production:</td>
+                <td> <input type="color" id="PRODcolor" class="color-display"></td>
+            </tr>
+
+            <tr>
+                <td> Staging:</td>
+                <td> <input type="color" id="STAGINGcolor" class="color-display"></td>
+            </tr>
+    </table>
+
+
+
+    <script src="../extensionscripts/popup.js"></script>
+</body>
+
+</html>

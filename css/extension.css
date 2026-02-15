@@ -1,0 +1,116 @@
+/* Extension CSS - includes popup and sidebar to keep consistent UI */
+
+/* Standard Colours: */
+
+:root {
+    --brand-color: #22acde;
+    /* get the right shade of blue for this! */
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    /* get the right shade of grey for this! */
+    --border-color: rgba(0, 0, 0, 0.3);
+    --background-color: #1e1e1e;
+    /* dark mode only */
+    --white-color: #ffffff;
+    --grey-color: #555;
+
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--white-color);
+    font-size: 16px;
+}
+
+.header {
+    background-color: var(--brand-color);
+    /* Azure blue */
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.logo {
+    width: 24px;
+    height: 24px;
+    background-color: var(--white-color);
+    border-radius: 4px;
+}
+
+.content {
+    padding: 15px;
+}
+
+.toggle-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.input-box {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: var(--shadow-color);
+    border: 1px solid var(--border-color);
+    color: var(--white-color);
+    border-radius: 5px;
+    box-sizing: border-box;
+    /* Important for padding */
+}
+
+/* Simple CSS Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--grey-color);
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.secret {
+    margin: 5px;
+}
+
+input:checked+.slider {
+    background-color: var(--brand-color);
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+}

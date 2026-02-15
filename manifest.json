@@ -1,0 +1,59 @@
+{
+  "manifest_version": 3,
+  "name": "LegalStream Technology Actionstep Helper",
+  "short_name": "LS AS Helpler",
+  "version": "5.0.0",
+  "version_name": "POC Consolidation",
+  "author": "Ian Smith",
+  "description": "Update ActionStep UI with Quality of Life improvements.",
+  "homepage_url": "https://www.legalstream.com.au/",
+  "permissions": [
+    "storage"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "css/toast.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "action": {
+    "default_popup": "html/popup.html",
+    "default_title": "Click to open panel",
+    "default_icon": {
+      "16": "images/legalstream.png",
+      "32": "images/legalstream.png",
+      "48": "images/legalstream.png",
+      "128": "images/legalstream.png"
+    },
+    "default_title": "LegalStream Technology Actionstep Helper"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.actionstepstaging.com/*",
+        "https://*.actionstep.com/*"
+      ],
+      "run_at": "document_idle",
+      "js": [
+        "extensionscripts/toast.js",
+        "contentscripts/qolheaderColor.js",
+        "contentscripts/qolgetJoke.js",
+        "contentscripts/qollistviews.js",
+        "contentscripts/qolfeeoverrides.js",
+        "contentscripts/INIT.js",
+        "contentscripts/MAIN.js"
+      ],
+      "css": [
+        "css/toast.css",
+        "css/extension.css"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "extensionscripts/background.js"
+  }
+}
