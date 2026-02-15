@@ -1,17 +1,3 @@
-///---------------------------------------------------------------------------------------------------------------------------------------------------///
-/// TITLE:    QoL Admin Scripts
-/// PURPOSE:  Help ActionStep Admin users by changing the UI in key areas
-/// AUTHOR:   Ian Smith
-///---------------------------------------------------------------------------------------------------------------------------------------------------///
-/// CHANGES: 
-///   Version      Date           Author          Comments            
-///   1.0         Jan 2026        Ian             Created prototype - changes UI and dmeonstratc calling simple extenral API
-///   1.1         Feb 2026        Ian             Structure and style to make easy to add more UI enhancements
-///   1.2         Feb 2026        Ian             Optimised, standardised & consolidated helper functions - prepare to submit for review
-///                                               Added verboselogging option 
-///   1.3         Feb 2026        Ian             Added user options for environment colors.
-///---------------------------------------------------------------------------------------------------------------------------------------------------///
-
 GENERAL & 'To Do' list
 
   DONE - Standardise logging? - create new function to do all the console logging and config for verboselogging
@@ -20,15 +6,6 @@ GENERAL & 'To Do' list
   Check the script is right for the page? before running (add to config array in storage).
   
   Capture matter type id, action id, step id etc form urls.... display in popup for easy copy\paste.
-
-
-
-///---------------------------------------------------------------------------------------------------------------------------------------------------///
-/// TECHNICAL NOTES
-///---------------------------------------------------------------------------------------------------------------------------------------------------///
-REFERENCES:
-Manifest:  https://developer.chrome.com/docs/extensions/reference/manifest
-
 
 "update_url" - for automated rollout of updates to users?
 A string containing the URL of the extension's updates page. Use this key if you're hosting your extension outside the Chrome Web Store.
