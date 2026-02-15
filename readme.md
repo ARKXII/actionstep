@@ -18,7 +18,7 @@ Defines overrides for default Chrome pages. For more information, see Override C
 
 
 # SECURITY:
-##"content_security_policy"
+## "content_security_policy"
 Defines restrictions on the scripts, styles, and other resources an extension can use. For more information, see Content security policy.
 
 ## "cross_origin_embedder_policy"
