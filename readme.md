@@ -5,6 +5,17 @@
 3. CSV extraction for global and client fee overrides
 4. JSON/CSV extraction for matter workflow
 
+# How to Install
+
+1. Make sure that your chromium browser is in Developer Mode
+2. Download the latest release
+3. Extract the downloaded .zip file
+4. Click 'Load unpacked' in your browser
+5. Navigate to the extracted folder
+6. Click open folder
+
+### DONE! 
+
 # GENERAL & 'To Do' list
 
 - Check the script is right for the page? before running (add to config array in storage).
@@ -24,10 +35,10 @@
 # SECURITY:
 
 *"content_security_policy"*<br>
-Defines restrictions on the scripts, styles, and other resources an extension can use. For more information, see Content security policy.
+- Defines restrictions on the scripts, styles, and other resources an extension can use. For more information, see Content security policy.
 
 *"cross_origin_embedder_policy"*<br>
-Specifies a value for the Cross-Origin-Embedder-Policy HTTP header, which configures embedding of cross-origin resources in an extension page.
+- Specifies a value for the Cross-Origin-Embedder-Policy HTTP header, which configures embedding of cross-origin resources in an extension page.
 
 *"cross_origin_opener_policy"*<br>
-Specifies a value for the Cross-Origin-Opener-Policy HTTP header, which lets you ensure that a top-level extension page doesn't share a browsing context group with cross-origin documents.
+- Specifies a value for the Cross-Origin-Opener-Policy HTTP header, which lets you ensure that a top-level extension page doesn't share a browsing context group with cross-origin documents.

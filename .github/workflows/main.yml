@@ -1,16 +1,26 @@
 name: Create Release ZIP
 
-permissions:
-  contents: write
-
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '*.md'
+      - '.github/**'
+      - 'LICENSE'
+      - '*.txt'
 
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    # Add an additional check to ensure we only run when there are actual code changes
+    if: |
+      !contains(github.event.head_commit.message, 'skip-release') &&
+      !startsWith(github.event.head_commit.message, 'docs:') &&
+      !startsWith(github.event.head_commit.message, 'chore:') &&
+      !startsWith(github.event.head_commit.message, 'readme:')
     
     steps:
       - name: Checkout code
@@ -18,33 +28,78 @@ jobs:
         with:
           fetch-depth: 0  # Fetch all history for versioning
       
+      - name: Check if code files were modified
+        id: check_changes
+        run: |
+          # Get list of changed files in this push
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
+          
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+          
+          # Define patterns to ignore (documentation files)
+          IGNORE_PATTERNS="README\.md|\.md$|docs/|\.github/|LICENSE|\.txt$"
+          
+          # Check if any changed file doesn't match ignore patterns
+          CODE_CHANGED=false
+          while IFS= read -r file; do
+            if [[ ! "$file" =~ $IGNORE_PATTERNS ]]; then
+              CODE_CHANGED=true
+              echo "Code change detected in: $file"
+              break
+            fi
+          done <<< "$CHANGED_FILES"
+          
+          if [[ "$CODE_CHANGED" == "true" ]]; then
+            echo "code_changed=true" >> $GITHUB_OUTPUT
+            echo "Proceeding with release..."
+          else
+            echo "code_changed=false" >> $GITHUB_OUTPUT
+            echo "Only documentation files changed, skipping release."
+            exit 78  # Exit with neutral code to stop the job but not mark as failed
+          fi
+      
       - name: Get version from tags
         id: get_version
+        if: steps.check_changes.outputs.code_changed == 'true'
         run: |
           # Get the latest tag, default to 1.0.0 if none exists
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
           echo "Latest tag: $LATEST_TAG"
           
-          # Increment version (assuming semantic versioning)
-          IFS='.' read -r -a VERSION_PARTS <<< "$LATEST_TAG"
-          MAJOR=${VERSION_PARTS[0]}
-          MINOR=${VERSION_PARTS[1]}
-          PATCH=${VERSION_PARTS[2]}
-          
-          # Increment patch version by default
-          NEW_PATCH=$((PATCH + 1))
-          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+          # Increment version based on commit message or auto
+          if [[ "${{ github.event.head_commit.message }}" =~ major-release ]]; then
+            # Major version increment
+            IFS='.' read -r -a VERSION_PARTS <<< "$LATEST_TAG"
+            MAJOR=$((VERSION_PARTS[0] + 1))
+            NEW_VERSION="$MAJOR.0.0"
+          elif [[ "${{ github.event.head_commit.message }}" =~ minor-release ]]; then
+            # Minor version increment
+            IFS='.' read -r -a VERSION_PARTS <<< "$LATEST_TAG"
+            MAJOR=${VERSION_PARTS[0]}
+            MINOR=$((VERSION_PARTS[1] + 1))
+            NEW_VERSION="$MAJOR.$MINOR.0"
+          else
+            # Patch version increment (default)
+            IFS='.' read -r -a VERSION_PARTS <<< "$LATEST_TAG"
+            MAJOR=${VERSION_PARTS[0]}
+            MINOR=${VERSION_PARTS[1]}
+            PATCH=${VERSION_PARTS[2]}
+            NEW_PATCH=$((PATCH + 1))
+            NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+          fi
           
           echo "New version: $NEW_VERSION"
           echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
       
       - name: Create ZIP archive
+        if: steps.check_changes.outputs.code_changed == 'true'
         uses: montudor/action-zip@v1.0.0
         with:
-          args: zip -qq -r "release-${{ steps.get_version.outputs.version }}.zip" . -x "*.git*" ".github/*" "README.md"
+          args: zip -qq -r "release-${{ steps.get_version.outputs.version }}.zip" . -x "*.git*" ".github/*" "*.md" "docs/*" "LICENSE" "*.txt"
       
       - name: Create Release
-        id: create_release
+        if: steps.check_changes.outputs.code_changed == 'true'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.get_version.outputs.version }}
@@ -54,7 +109,14 @@ jobs:
             
             Automated release created from main branch.
             
-            ### Changes
-            - See commit history for details
+            ### Changes in this release
+            ${{ github.event.head_commit.message }}
+            
+            ### Files changed
+            ```
+            ${{ steps.check_changes.outputs.changed_files }}
+            ```
           files: release-${{ steps.get_version.outputs.version }}.zip
           generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
