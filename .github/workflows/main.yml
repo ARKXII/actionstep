@@ -3,7 +3,6 @@ name: Create Release ZIP
 permissions:
   contents: write
 
-
 on:
   push:
     branches:
@@ -40,6 +39,14 @@ jobs:
           
           echo "Changed files:"
           echo "$CHANGED_FILES"
+          
+          # Store changed files in output for later use
+          # Use a delimiter to handle multiline output properly
+          {
+            echo 'changed_files<<EOF'
+            echo "$CHANGED_FILES"
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
           
           # Define patterns to ignore (documentation files)
           IGNORE_PATTERNS="README\.md|\.md$|docs/|\.github/|LICENSE|\.txt$"
@@ -107,7 +114,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.get_version.outputs.version }}
-          name: Release ${{ steps.get_version.outputs.version }}
+          name: dev ${{ steps.get_version.outputs.version }}
           body: |
             ## Release ${{ steps.get_version.outputs.version }}
             
