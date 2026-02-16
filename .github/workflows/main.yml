@@ -1,5 +1,9 @@
 name: Create Release ZIP
 
+permissions:
+  contents: write
+
+
 on:
   push:
     branches:
