@@ -1,13 +1,27 @@
 "use strict";
 function extractTreeToJSON(currentURL, environment) {
-  /// <summary>
-  /// Extracts jsTree structure and provides copy button for JSON format
-  /// </summary>
+///---------------------------------------------------------------------------------------------------------------------------------------------------///
+/// TITLE:    QoL Admin Scripts - Workflow Extractor 
+/// PURPOSE:  Improve Actionstep UI while editing listviews
+/// AUTHOR:   Joshua
+/// CHANGES: 
+///   Version      Date           Author          Comments            
+///   1.0         Feb 2026        Joshua          LS-AS Qol enhancements (workflow extraction)
+///   
+///   
+///--------------------------------------------------------------------------------------------------------------------------------------------------///
+///   Extracts the workflow tree structure from the workflow editor and presents it in a readable JSON format, with an option to copy to clipboard.
+///--------------------------------------------------------------------------------------------------------------------------------------------------///
 
   // Find the tree container
   const treeContainer = document.querySelector(".js-tree-container");
   if (!treeContainer) {
     return false
+  }
+
+  if (environment !== "STAGING") {
+    console.log("qolScript: Workflow Extractor - Not in staging environment, skipping execution to avoid confusion or issues in production.");
+    return false; // Only run on staging to avoid confusion or issues in production
   }
 
   // Recursive function to extract tree data
