@@ -1,3 +1,4 @@
+"use strict";
 function extractTreeToJSON(currentURL, environment) {
   /// <summary>
   /// Extracts jsTree structure and provides copy button for JSON format
@@ -6,12 +7,12 @@ function extractTreeToJSON(currentURL, environment) {
   // Find the tree container
   const treeContainer = document.querySelector(".js-tree-container");
   if (!treeContainer) {
-    return "qolScript: No tree container found. Exiting script.";
+    return false
   }
 
   // Recursive function to extract tree data
   function extractNode(liElement) {
-    const anchor = liElement.querySelector("a.jstree-anchor");
+  const anchor = liElement.querySelector("a.jstree-anchor");
     const idSpan = anchor ? anchor.querySelector("span[title]") : null;
     const name = idSpan ? idSpan.textContent.trim() : "";
     const nodeId = liElement.id;
