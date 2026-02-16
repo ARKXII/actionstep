@@ -1,9 +1,9 @@
 # Extension Features
 
-1. Actionstep UI fixes in editing custom list views
-2. Header Color for stage and prod environment
-3. CSV extraction for global and client fee overrides
-4. JSON/CSV extraction for matter workflow
+- Actionstep UI fixes in editing custom list views
+- Header Color for stage and prod environment
+- CSV extraction for global and client fee overrides
+- JSON/CSV extraction for matter workflow
 
 # How to Install
 
@@ -18,7 +18,7 @@
 
 # GENERAL & 'To Do' list
 
-- Check the script is right for the page? before running (add to config array in storage).
+- Check the script is right for the page before running (add to config array in storage).
 - Capture matter type id, action id, step id etc form urls.... display in popup for easy copy\paste.
 - ~~DONE - Standardise logging? - create new function to do all the console logging and config for verboselogging~~
 - ~~DONE - Allow user to change colours for staging vs prod - with color pickert in the popup (with defaults).~~
