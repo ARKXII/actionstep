@@ -3,7 +3,7 @@
   visibility: hidden; /* Hidden by default. Visible on click */
   min-width: 250px; /* Set a default minimum width */
   margin-left: -125px; /* Divide value of min-width by 2 */
-  background-color: #22acde; /* Black #333 background color */
+  background-color: var(--toast-bg-color, #22acde); /* Black #333 background color */
   color: #fff; /* White text color */
   text-align: center; /* Centered text */
   border-radius: 2px; /* Rounded borders */

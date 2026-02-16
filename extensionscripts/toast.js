@@ -4,20 +4,35 @@
 /// PURPOSE:  Toast popup with messages
 /// AUTHOR:   Joshua
 ///---------------------------------------------------------------------------------------------------------------------------------------------------///
-/// CHANGES: 
-///   Version      Date           Author          Comments            
-///   1.0         Feb 2026        Joshua          LS-AS Qol enhancements
-///   
+/// CHANGES:
+///   Version      Date           Author          Comments
+///   1.1         Feb 2026        Joshua          LS-AS Qol enhancements
+///
 ///---------------------------------------------------------------------------------------------------------------------------------------------------///
-
 
 const ExtensionUtils = {
   showToast: function showToast(string) {
+    let stagingColor = ""; // default staging color
+    let productionColor = ""; // default production color
+    chrome.storage.sync
+      .get({
+        QoL_EnvironmentColour_Staging: stagingColor,
+        QoL_EnvironmentColour_Production: productionColor,
+      })
+      .then((colors) => {
+        stagingColor = colors.QoL_EnvironmentColour_Staging || stagingColor;
+        productionColor =
+          colors.QoL_EnvironmentColour_Production || productionColor;
+      });
     // Get toast css
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = chrome.runtime.getURL("../css/toast.css");
     document.head.appendChild(link);
+    document.documentElement.style.setProperty(
+      "--toast-bg-color",
+      stagingColor,
+    ); // default color, can be overridden by CSS variable
 
     // Check if snackbar already exists
     let toast = document.getElementById("snackbar");
@@ -54,10 +69,6 @@ const ExtensionUtils = {
       }, 3000);
     }
   },
-
-
-
-  
 };
 
 window.ExtensionUtils = ExtensionUtils;
