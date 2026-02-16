@@ -105,20 +105,27 @@ function extractTreeToJSON(currentURL, environment) {
 
         if (copyBtn && textarea) {
           copyBtn.addEventListener("click", function () {
-            textarea.select();
-            document.execCommand("copy");
+            // document.execCommand("copy"); ---Deprecated copy command
+            const copyText = textarea.value;
+            navigator.clipboard
+              .writeText(copyText)
+              .then(() => {
+                // Visual feedback
+                const originalText = this.textContent;
+                this.textContent = "Copied!";
+                this.style.background = "#4CAF50";
 
-            // Visual feedback
-            const originalText = this.textContent;
-            this.textContent = "Copied!";
-            this.style.background = "#4CAF50";
+                setTimeout(() => {
+                  this.textContent = originalText;
+                  this.style.background = "#2196F3";
+                }, 1500);
 
-            setTimeout(() => {
-              this.textContent = originalText;
-              this.style.background = "#2196F3";
-            }, 1500);
-
-            ExtensionUtils.showToast("JSON copied to clipboard!");
+                ExtensionUtils.showToast("JSON copied to clipboard!");
+              })
+              .catch((err) => {
+                console.error("Failed to copy text: ", err);
+                ExtensionUtils.showToast("Failed to copy JSON to clipboard.");
+              });
           });
         }
       }, 100);
