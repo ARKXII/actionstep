@@ -72,6 +72,14 @@ chrome.storage.sync.get({ QoL_Features: [] }, function (result) {
                         log(`${feature} - completed successfully.`);
                         ExtensionUtils.showToast(`${feature} - completed successfully.`);
                     }
+
+                }
+                if (feature === "QoL_WorkflowExtract") {
+                    result = extractTreeToJSON(currentURL, environment);
+                    if (result) {
+                        log(`${feature} - completed successfully.`);
+                        ExtensionUtils.showToast(`${feature} - completed successfully.`);
+                    }
                 }
             }
         }

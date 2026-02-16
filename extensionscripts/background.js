@@ -114,6 +114,13 @@ async function startUp() {
       enabled: false,
       pagename: "Actionstep (All Pages)",
       comment: "Test script to get a joke from an API"
+    },
+    {
+      qolname: "QoL_WorkflowExtract",
+      featureSet: "Set1",
+      enabled: false,
+      pagename: "Actionstep (All Pages)",
+      comment: "Extract workflow structure and provide copy button for JSON/CSV format"
     }
   ];
 

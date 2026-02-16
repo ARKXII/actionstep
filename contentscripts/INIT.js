@@ -30,7 +30,8 @@ const environment = checkEnvironment(currentURL); // returns staging or producti
             "QoL_EnvironmentColour",
             "QoL_GetJoke",
             "QoL_ClientFees",
-            "QoL_Listviews"
+            "QoL_Listviews",
+            "QoL_WorkflowExtract",
         ];
 
 /// To Do: url filtering is currently in manifest but might be better in code
