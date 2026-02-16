@@ -1,5 +1,8 @@
 name: Create Release ZIP
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -55,5 +58,3 @@ jobs:
             - See commit history for details
           files: release-${{ steps.get_version.outputs.version }}.zip
           generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
