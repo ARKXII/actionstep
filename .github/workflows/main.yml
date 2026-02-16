@@ -1,0 +1,59 @@
+name: Create Release ZIP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for versioning
+      
+      - name: Get version from tags
+        id: get_version
+        run: |
+          # Get the latest tag, default to 1.0.0 if none exists
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
+          echo "Latest tag: $LATEST_TAG"
+          
+          # Increment version (assuming semantic versioning)
+          IFS='.' read -r -a VERSION_PARTS <<< "$LATEST_TAG"
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
+          PATCH=${VERSION_PARTS[2]}
+          
+          # Increment patch version by default
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+          
+          echo "New version: $NEW_VERSION"
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+      
+      - name: Create ZIP archive
+        uses: montudor/action-zip@v1.0.0
+        with:
+          args: zip -qq -r "release-${{ steps.get_version.outputs.version }}.zip" . -x "*.git*" ".github/*" "README.md"
+      
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get_version.outputs.version }}
+          name: Release ${{ steps.get_version.outputs.version }}
+          body: |
+            ## Release ${{ steps.get_version.outputs.version }}
+            
+            Automated release created from main branch.
+            
+            ### Changes
+            - See commit history for details
+          files: release-${{ steps.get_version.outputs.version }}.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
