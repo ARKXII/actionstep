@@ -14,6 +14,19 @@ function extractTreeToJSON(currentURL, environment) {
   ///   Extracts the workflow tree structure from the workflow editor and presents it in a readable JSON format, with an option to copy to clipboard.
   ///--------------------------------------------------------------------------------------------------------------------------------------------------///
 
+  //check current environment
+  console.log("qolScript: Current Environment:", environment);
+
+  //console log matter name and id
+  const matterName = document.querySelector(
+    ".as-breadcrumbs li:last-child b",
+  ).textContent;
+  const matterId = currentURL.split("=")[1];
+
+  // get the last part of the url after '='
+  console.log("qolscript: Matter Id:", matterId); 
+  console.log("qolscript: Matter Name:", matterName);
+
   // Find the tree container
   const treeContainer = document.querySelector(".js-tree-container");
   if (!treeContainer) {
@@ -97,7 +110,7 @@ function extractTreeToJSON(currentURL, environment) {
             Copy JSON
           </button>
         </div>
-      </div><textarea id="tree-json-textarea" style="width:100%;height:500px;padding:8px;border:1px solid #ddd;font-family:Arial;font-size:14px" readonly> ${jsonOutput}</textarea>
+      </div><textarea id="tree-json-textarea" style="width:100%;height:500px;padding:8px;border:1px solid #ddd;font-family:Arial;font-size:14px" readonly>Matter ID: ${matterId} \nMatter Name: ${matterName}\n\n${jsonOutput}</textarea>
     </div>
   `;
 
@@ -217,14 +230,14 @@ function extractTreeToJSON(currentURL, environment) {
                 ),
               ].join("\n");
 
-              textarea.value = csvContent;
+              textarea.value = `Matter ID: ${matterId}\nMatter Name: ${matterName}\n\n${csvContent}`;
               document.getElementById("copy-json-btn").innerHTML = "Copy CSV";
               indicator.textContent = "Format: CSV";
               this.textContent = "Show JSON Version";
               csvSpan.innerHTML = "Need JSON instead?";
               showingJSON = false;
             } else {
-              textarea.value = jsonOutput;
+              textarea.value = `Matter ID: ${matterId}\nMatter Name: ${matterName}\n\n${jsonOutput}`;
               document.getElementById("copy-json-btn").innerHTML = "Copy JSON";
               indicator.textContent = "Format: JSON";
               this.textContent = "Show CSV Version";
