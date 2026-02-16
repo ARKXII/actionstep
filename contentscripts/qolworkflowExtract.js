@@ -7,6 +7,7 @@ function extractTreeToJSON(currentURL, environment) {
   /// CHANGES:
   ///   Version      Date           Author          Comments
   ///   1.0         Feb 2026        Joshua          LS-AS Qol enhancements (workflow extraction)
+  ///   1.1         Feb 2026        Joshua          removed stage only flag
   ///
   ///
   ///--------------------------------------------------------------------------------------------------------------------------------------------------///
