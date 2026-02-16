@@ -40,7 +40,12 @@ function qollistviews(currentURL, environment) {
         QoL_EnvironmentColour_Production: productionColor,
       })
       .then((colors) => {
-        stagingColor = colors.QoL_EnvironmentColour_Staging || stagingColor;
+        if (environment === "PRODUCTION") {
+          currentColor =
+            colors.QoL_EnvironmentColour_Production || productionColor;
+        } else {
+          currentColor = colors.QoL_EnvironmentColour_Staging || stagingColor;
+        }
 
         const container = document.createElement("DIV");
         container.id = "step-list-container";
@@ -50,7 +55,7 @@ function qollistviews(currentURL, environment) {
               <strong style="font-size: 14px;">Selected Steps</strong>
               <div>
                 <span style="font-size: 12px; color: #666; margin-right: 8px;">${texts.length} steps selected</span>
-                <button id="copy-steps-btn" style="padding: 4px 10px; background: ${stagingColor}; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 13px;">
+                <button id="copy-steps-btn" style="padding: 4px 10px; background: ${currentColor}; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 13px;">
                   Copy Steps
                 </button>
               </div>
@@ -98,7 +103,7 @@ function qollistviews(currentURL, environment) {
 
                   setTimeout(() => {
                     this.textContent = originalText;
-                    this.style.background = stagingColor;
+                    this.style.background = currentColor;
                   }, 1500);
 
                   ExtensionUtils.showToast("Steps copied to clipboard!");

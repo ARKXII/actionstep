@@ -19,11 +19,6 @@ function extractTreeToJSON(currentURL, environment) {
     return false;
   }
 
-  if (environment !== "STAGING") {
-    console.log("qolScript: Workflow Extractor - Not in stage. Skipping code.");
-    return false; // Only run on staging to avoid confusion or issues in production
-  }
-
   // Recursive function to extract tree data
   function extractNode(liElement) {
     const anchor = liElement.querySelector("a.jstree-anchor");
@@ -81,7 +76,14 @@ function extractTreeToJSON(currentURL, environment) {
       QoL_EnvironmentColour_Production: productionColor,
     })
     .then((colors) => {
-      stagingColor = colors.QoL_EnvironmentColour_Staging || stagingColor;
+      let currentColor;
+      if (environment === "PRODUCTION") {
+        currentColor =
+          colors.QoL_EnvironmentColour_Production || productionColor;
+      } else {
+        currentColor = colors.QoL_EnvironmentColour_Staging || stagingColor;
+      }
+
       const container = document.createElement("DIV");
       container.id = "tree-json-container";
       container.innerHTML = `
@@ -90,7 +92,7 @@ function extractTreeToJSON(currentURL, environment) {
         <strong style="font-size: 14px;">Workflow Structure</strong>
         <div>
           <span id="json-format-indicator" style="font-size: 12px; color: #666; margin-right: 8px;">Format: JSON</span>
-          <button id="copy-json-btn" style="padding: 4px 10px; background: ${stagingColor}; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 13px;">
+          <button id="copy-json-btn" style="padding: 4px 10px; background: ${currentColor}; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 13px;">
             Copy JSON
           </button>
         </div>
@@ -117,7 +119,7 @@ function extractTreeToJSON(currentURL, environment) {
 
                 setTimeout(() => {
                   this.textContent = originalText;
-                  this.style.background = "#2196F3";
+                  this.style.background = currentColor;
                 }, 1500);
 
                 ExtensionUtils.showToast("JSON copied to clipboard!");
