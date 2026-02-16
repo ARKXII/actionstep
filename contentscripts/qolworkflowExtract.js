@@ -213,7 +213,7 @@ function extractTreeToJSON(currentURL, environment) {
         }
       });
     }
-  }, 100);
+  }, 150);
 
   return treeData;
 }
