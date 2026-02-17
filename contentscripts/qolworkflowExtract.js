@@ -7,7 +7,7 @@ function extractTreeToJSON(currentURL, environment) {
   /// CHANGES:
   ///   Version      Date           Author          Comments
   ///   1.0         Feb 2026        Joshua          LS-AS Qol enhancements (workflow extraction)
-  ///   1.1         Feb 2026        Joshua          removed stage only flag
+  ///   1.1         Feb 2026        Joshua          removed stage only flag and added mattername and id to the output.
   ///
   ///
   ///--------------------------------------------------------------------------------------------------------------------------------------------------///
@@ -24,7 +24,7 @@ function extractTreeToJSON(currentURL, environment) {
   const matterId = currentURL.split("=")[1];
 
   // get the last part of the url after '='
-  console.log("qolscript: Matter Id:", matterId); 
+  console.log("qolscript: Matter Id:", matterId);
   console.log("qolscript: Matter Name:", matterName);
 
   // Find the tree container
@@ -43,6 +43,8 @@ function extractTreeToJSON(currentURL, environment) {
     const node = {
       id: nodeId,
       name: name,
+      matterId: matterId,
+      matterName: matterName,
       children: [],
     };
 
@@ -204,6 +206,8 @@ function extractTreeToJSON(currentURL, environment) {
                   name: node.name,
                   level: currentPath.length,
                   path: currentPath.join(" > "),
+                  matterId: matterId, //from outer scope
+                  matterName: matterName, //from outer scope
                 });
 
                 node.children.forEach((child) =>
@@ -214,7 +218,14 @@ function extractTreeToJSON(currentURL, environment) {
               treeData.forEach((root) => flattenNode(root));
 
               // Create CSV
-              const csvFields = ["id", "name", "level", "path"];
+              const csvFields = [
+                "id",
+                "name",
+                "level",
+                "path",
+                "matterId",
+                "matterName",
+              ];
               const csvContent = [
                 csvFields.join("|"),
                 ...flatNodes.map((node) =>
