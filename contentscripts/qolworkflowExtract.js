@@ -112,7 +112,7 @@ function extractTreeToJSON(currentURL, environment) {
             Copy JSON
           </button>
         </div>
-      </div><textarea id="tree-json-textarea" style="width:100%;height:500px;padding:8px;border:1px solid #ddd;font-family:Arial;font-size:14px" readonly>Matter ID: ${matterId} \nMatter Name: ${matterName}\n\n${jsonOutput}</textarea>
+      </div><textarea id="tree-json-textarea" style="width:100%;height:500px;padding:8px;border:1px solid #ddd;font-family:Arial;font-size:14px" readonly>Matter ID: ${jsonOutput}</textarea>
     </div>
   `;
 
@@ -241,14 +241,14 @@ function extractTreeToJSON(currentURL, environment) {
                 ),
               ].join("\n");
 
-              textarea.value = `Matter ID: ${matterId}\nMatter Name: ${matterName}\n\n${csvContent}`;
+              textarea.value = `${csvContent}`;
               document.getElementById("copy-json-btn").innerHTML = "Copy CSV";
               indicator.textContent = "Format: CSV";
               this.textContent = "Show JSON Version";
               csvSpan.innerHTML = "Need JSON instead?";
               showingJSON = false;
             } else {
-              textarea.value = `Matter ID: ${matterId}\nMatter Name: ${matterName}\n\n${jsonOutput}`;
+              textarea.value = `${jsonOutput}`;
               document.getElementById("copy-json-btn").innerHTML = "Copy JSON";
               indicator.textContent = "Format: JSON";
               this.textContent = "Show CSV Version";
